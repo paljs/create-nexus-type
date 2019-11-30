@@ -5,17 +5,9 @@ This is Cli tool to Create nexus type for Prisma projects. When you try to upgra
 ## How use?
 
 ```
-yarn add -D create-nexus-type
-or 
-npm i create-nexus-type --save-dev
-```
-
-after that you can run 
-
-```
-cnt
+npx cnt
 // Customize output dir or schema.prisma dir
-cnt --outDir src/types --schema prisma/schema.prisma // this default values you can change them 
+npx cnt --outDir src/types --schema prisma/schema.prisma // this default values you can change them 
 ```
 
 ## Have questions?
