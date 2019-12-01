@@ -34,19 +34,20 @@ function cli() {
             index += `export * from './${lineArray[1]}';
 `;
             fileName = lineArray[1] + '.ts';
-            fileContent = `import {objectType} from 'nexus';
-      
+            fileContent = `import { objectType } from 'nexus'
+
 export const ${lineArray[1]} = objectType({
-    name: "${lineArray[1]}",
-    definition(t) {`;
+  name: '${lineArray[1]}',
+  definition(t) {`;
           } else if (fileContent !== '') {
             if (lineArray[0] !== '}') {
               fileContent += `
-        t.model.${lineArray[2]}()`;
+    t.model.${lineArray[2]}()`;
             } else {
               fileContent += `
-    }
-});`;
+  },
+})
+`;
               if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir);
               }

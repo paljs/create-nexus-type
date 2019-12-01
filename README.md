@@ -10,12 +10,20 @@ or
 npm i create-nexus-type --save-dev
 ```
 
-after that you can run 
+After that you can run 
 
 ```
 npx cnt
 // Customize output dir or schema.prisma dir
 npx cnt --outDir src/types --schema prisma/schema.prisma // this default values you can change them 
+```
+
+And have another option to crete TypeScript types to use for your work 
+
+```
+npx create-types
+// Customize output dir or schema.prisma dir
+npx create-types --outDir src/generated --schema prisma/schema.prisma // this default values you can change them 
 ```
 
 ## Have questions?
