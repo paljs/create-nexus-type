@@ -10,12 +10,16 @@ or
 npm i create-nexus-type --save-dev
 ```
 
-After that you can run 
+## Command options for `cnt`
 
 ```
-npx cnt
-// Customize output dir or schema.prisma dir
-npx cnt --outDir src/types --schema prisma/schema.prisma // this default values you can change them 
+  --schema To add schema file path if you not run command in root of project
+  --outDir Created files output dir default src/types
+  -mq      add this arg to create Queries and Mutations for models 
+  -m       add this arg to create Mutations
+  -q       add this arg to create Queries
+  -f       add this arg to add {filtering: true} option to Queries
+  -o       add this arg to add {ordering: true} option to Queries
 ```
 
 ### Example
@@ -38,6 +42,12 @@ model Post {
   id     String @id @unique @default(cuid())
   author User[]
 }
+```
+
+run 
+
+```
+npx cnt
 ```
 
 OutPut
@@ -76,12 +86,61 @@ export * from './User'
 export * from './Post'
 ```
 
-And have another option to crete TypeScript types to use for your work 
+## Create Queries and Mutations 
+
+run 
 
 ```
-npx create-types
-// Customize output dir or schema.prisma dir
-npx create-types --outDir src/generated --schema prisma/schema.prisma // this default values you can change them 
+npx cnt --mq -f -o
+```
+
+OutPut
+
+```ts
+import { objectType, extendType } from 'nexus'
+
+export const User = objectType({
+  name: 'User',
+  definition(t) {
+    t.model.id()
+    t.model.email()
+    t.model.birthDate()
+    t.model.posts()
+  },
+})
+
+export const userQuery = extendType({
+  type: 'Query',
+  definition(t) {
+    t.crud.user()
+    t.crud.users({ filtering: true, ordering: true })
+  },
+})
+
+export const userMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.crud.createOneUser()
+    t.crud.updateOneUser()
+    t.crud.upsertOneUser()
+    t.crud.deleteOneUser()
+
+    t.crud.updateManyUser()
+    t.crud.deleteManyUser()
+  },
+})
+```
+
+## Crete TypeScript types
+
+And have another option to crete TypeScript types to use for your work 
+
+### Command options 
+
+```
+  usage: create-types (Crete TypeScript types from Prisma schema)
+  --schema To add schema file path if you not run command in root of project
+  --outDir Created files output dir default src/generated
 ```
 
 ### Example
@@ -111,6 +170,13 @@ enum UserRole {
   ADMIN
 }
 ```
+
+run 
+
+```
+npx create-types
+```
+
 
 OutPut
 
