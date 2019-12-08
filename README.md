@@ -138,7 +138,7 @@ And have another option to create TypeScript types to use for your work
 ### Command options for `create-types`
 
 ```
-  usage: create-types (Crete TypeScript types from Prisma schema)
+  usage: create-types (Create TypeScript types from Prisma schema)
   --schema To add schema file path if you not run command in root of project
   --outDir Created files output dir default src/generated
 ```
@@ -203,6 +203,6 @@ enum UserRole {
 
 ## Have questions?
 
-Didn't find something here? Look through the [issues](https://github.com/oahtech/create-nexus-type/issues) or simply drop us a line at <ahmed.elywa@icloud.com>.
+Didn't find something here? Look through the [issues](https://github.com/AhmedElywa/create-nexus-type/issues) or simply drop us a line at <ahmed.elywa@icloud.com>.
 
 # Like my tool give me star 
