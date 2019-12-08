@@ -204,3 +204,5 @@ enum UserRole {
 ## Have questions?
 
 Didn't find something here? Look through the [issues](https://github.com/oahtech/create-nexus-type/issues) or simply drop us a line at <ahmed.elywa@icloud.com>.
+
+# Like my tool give me star 
