@@ -10,16 +10,16 @@ or
 npm i create-nexus-type --save-dev
 ```
 
-## Command options for `cnt`
+### Command options for `cnt`
 
 ```
   --schema To add schema file path if you not run command in root of project
   --outDir Created files output dir default src/types
-  -mq      add this arg to create Queries and Mutations for models 
-  -m       add this arg to create Mutations
-  -q       add this arg to create Queries
-  -f       add this arg to add {filtering: true} option to Queries
-  -o       add this arg to add {ordering: true} option to Queries
+  -mq      add this option to create Queries and Mutations for models 
+  -m       add this option to create Mutations
+  -q       add this option to create Queries
+  -f       add this option to add {filtering: true} option to Queries
+  -o       add this option to add {ordering: true} option to Queries
 ```
 
 ### Example
@@ -135,7 +135,7 @@ export const userMutation = extendType({
 
 And have another option to crete TypeScript types to use for your work 
 
-### Command options 
+### Command options for `create-types`
 
 ```
   usage: create-types (Crete TypeScript types from Prisma schema)
