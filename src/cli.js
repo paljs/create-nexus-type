@@ -39,20 +39,21 @@ function cli() {
 			lines.map(line => {
 				if (line !== '') {
 					const lineArray = line.split(' ');
-					if (lineArray[0] === 'model') {
-						index += `export * from './${lineArray[1]}';
+					const filteredArray = lineArray.filter(v => v);
+					if (filteredArray[0] === 'model') {
+						index += `export * from './${filteredArray[1]}';
 `;
-						fileName = lineArray[1] + '.ts';
+						fileName = filteredArray[1] + '.ts';
 						fileContent = `import { objectType${args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''} } from 'nexus'
 
-export const ${lineArray[1]} = objectType({
-  name: '${lineArray[1]}',
+export const ${filteredArray[1]} = objectType({
+  name: '${filteredArray[1]}',
   definition(t) {`;
 					} else if (fileContent !== '') {
-						if (lineArray[0] !== '}') {
+						if (filteredArray[0] !== '}' && filteredArray[0] !== '{') {
 							fileContent += `
-    t.model.${lineArray[2]}()`;
-						} else {
+    t.model.${filteredArray[0]}()`;
+						} else if (filteredArray[0] === '}'){
 							fileContent += `
   },
 })`;
