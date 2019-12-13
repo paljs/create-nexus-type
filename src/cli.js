@@ -49,7 +49,7 @@ function cli() {
 export const ${filteredArray[1]} = objectType({
   name: '${filteredArray[1]}',
   definition(t) {`;
-					} else if (fileContent !== '') {
+					} else if (fileContent !== '' && !filteredArray[0].includes('//')) {
 						if (filteredArray[0] !== '}' && filteredArray[0] !== '{') {
 							fileContent += `
     t.model.${filteredArray[0]}()`;
