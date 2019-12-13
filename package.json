@@ -1,6 +1,6 @@
 {
   "name": "create-nexus-type",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Create nexus types from Prisma2 schema ",
   "main": "src/cli.js",
   "repository": "https://github.com/oahtech/create-nexus-type.git",
