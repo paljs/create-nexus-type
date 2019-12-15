@@ -3,7 +3,7 @@
   "version": "1.0.9",
   "description": "Create nexus types from Prisma2 schema ",
   "main": "src/cli.js",
-  "repository": "https://github.com/oahtech/create-nexus-type.git",
+  "repository": "https://github.com/AhmedElywa/create-nexus-type.git",
   "author": "Ahmed Elywa",
   "license": "MIT",
   "bin": {
