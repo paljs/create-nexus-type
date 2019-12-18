@@ -11,6 +11,7 @@
     "create-types": "src/types.js"
   },
   "dependencies": {
-    "arg": "^4.1.2"
+    "arg": "^4.1.2",
+    "pluralize": "^8.0.0"
   }
 }

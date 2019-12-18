@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const arg = require('arg');
+const pluralize = require('pluralize');
 
 function getArgs() {
 	const args = arg({
@@ -44,7 +45,9 @@ function cli() {
 						index += `export * from './${filteredArray[1]}';
 `;
 						fileName = filteredArray[1] + '.ts';
-						fileContent = `import { objectType${args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''} } from 'nexus'
+						fileContent = `import { objectType${
+							args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
+						} } from 'nexus'
 
 export const ${filteredArray[1]} = objectType({
   name: '${filteredArray[1]}',
@@ -53,12 +56,16 @@ export const ${filteredArray[1]} = objectType({
 						if (filteredArray[0] !== '}' && filteredArray[0] !== '{') {
 							fileContent += `
     t.model.${filteredArray[0]}()`;
-						} else if (filteredArray[0] === '}'){
+						} else if (filteredArray[0] === '}') {
 							fileContent += `
   },
 })`;
-const model = fileName.split('.')[0];
-const modelName = getModelName(model);
+							const model = fileName.split('.')[0];
+							let newName = model.charAt(0).toLowerCase() + model.slice(1);
+							const modelName = {
+								plural: pluralize(newName),
+								singular: newName
+							};
 							if (args['--mq'] || args['-q']) {
 								fileContent += `
 
@@ -66,12 +73,20 @@ export const ${modelName.singular}Query = extendType({
   type: 'Query',
   definition(t) {
     t.crud.${modelName.singular}()
-    t.crud.${modelName.plural}(${args['-f'] && args['-o'] ? '{ filtering: true, ordering: true }' : args['-f'] ? '{ filtering: true }' : args['-o'] ? '{ ordering: true }' : ''})
+    t.crud.${modelName.plural}(${
+									args['-f'] && args['-o']
+										? '{ filtering: true, ordering: true }'
+										: args['-f']
+										? '{ filtering: true }'
+										: args['-o']
+										? '{ ordering: true }'
+										: ''
+								})
   },
 })`;
-              }
-              if(args['--mq'] || args['-m']) {
-                fileContent += `
+							}
+							if (args['--mq'] || args['-m']) {
+								fileContent += `
 
 export const ${modelName.singular}Mutation = extendType({
   type: 'Mutation',
@@ -85,7 +100,7 @@ export const ${modelName.singular}Mutation = extendType({
     t.crud.deleteMany${model}()
   },
 })`;
-              }
+							}
 							if (!fs.existsSync(dir)) {
 								fs.mkdirSync(dir);
 							}
@@ -105,7 +120,7 @@ export const ${modelName.singular}Mutation = extendType({
 }
 
 function help() {
-  const helpContent = `
+	const helpContent = `
   usage: cnt (create nexus types from Prisma schema)
   --schema To add schema file path if you not run command in root of project
   --outDir Created files output dir default src/types
@@ -115,23 +130,7 @@ function help() {
   -f       add this option to add {filtering: true} option to Queries
   -o       add this option to add {ordering: true} option to Queries
   `;
-  console.log(helpContent);
+	console.log(helpContent);
 }
 
-function getModelName(model) {
-	let newName = model.charAt(0).toLowerCase() + model.slice(1);
-  let lastLetter = newName.slice(-1);
-  let plural = '';
-	if (lastLetter != 's' && lastLetter != 'y') {
-		plural = newName + 's';
-	} else if (lastLetter == 'y') {
-		plural = newName.slice(0, -1) + 'ies';
-	} else {
-		plural = newName;
-  }
-  return {
-    plural,
-    singular: newName
-  }
-}
 cli();
