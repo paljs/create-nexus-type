@@ -53,7 +53,7 @@ export const ${filteredArray[1]} = objectType({
   name: '${filteredArray[1]}',
   definition(t) {`;
 					} else if (fileContent !== '' && !filteredArray[0].includes('//')) {
-						if (filteredArray[0] !== '}' && filteredArray[0] !== '{') {
+						if (filteredArray[0] !== '}' && filteredArray[0] !== '{' && filteredArray[0].indexOf("@@map") === -1) {
 							fileContent += `
     t.model.${filteredArray[0]}()`;
 						} else if (filteredArray[0] === '}') {
