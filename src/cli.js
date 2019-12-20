@@ -14,6 +14,7 @@ function getArgs() {
 		'-q': Boolean,
 		'-f': Boolean,
 		'-o': Boolean,
+		'--js': Boolean,		
 		'-h': '--help'
 	});
 	return {
@@ -34,6 +35,7 @@ function cli() {
 			let fileContent = '';
 			let fileName = '';
 			let index = '';
+			let moduleExports = '';
 			const dir = args['--outDir'] + '/';
 			const lines = data.split(`
 `);
@@ -42,16 +44,30 @@ function cli() {
 					const lineArray = line.split(' ');
 					const filteredArray = lineArray.filter(v => v);
 					if (filteredArray[0] === 'model') {
-						index += `export * from './${filteredArray[1]}';
+						if(args['--js']) {
+							index += `    ...require('./${filteredArray[1]}'),
 `;
-						fileName = filteredArray[1] + '.ts';
-						fileContent = `import { objectType${
+						} else {
+							index += `export * from './${filteredArray[1]}';
+`;							
+						}
+						fileName = `${filteredArray[1]}.${args['--js'] ? 'js': 'ts'}`;
+						if(args['--js']) {
+							fileContent = `const { objectType${
 							args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
-						} } from 'nexus'
+						} } = require('nexus')
+`;
+					    } else {
+							fileContent = `import { objectType${
+								args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
+							} } from 'nexus'	
 
-export const ${filteredArray[1]} = objectType({
+export `;							
+						}
+						fileContent += `const ${filteredArray[1]} = objectType({
   name: '${filteredArray[1]}',
   definition(t) {`;
+  						moduleExports = `	${filteredArray[1]},`
 					} else if (fileContent !== '' && !filteredArray[0].includes('//')) {
 						if (filteredArray[0] !== '}' && filteredArray[0] !== '{' && !filteredArray[0].includes("@@")) {
 							fileContent += `
@@ -69,7 +85,7 @@ export const ${filteredArray[1]} = objectType({
 							if (args['--mq'] || args['-q']) {
 								fileContent += `
 
-export const ${modelName.singular}Query = extendType({
+${args['--js'] ? '' : 'export '}const ${modelName.singular}Query = extendType({
   type: 'Query',
   definition(t) {
     t.crud.${modelName.singular}()
@@ -84,11 +100,13 @@ export const ${modelName.singular}Query = extendType({
 								})
   },
 })`;
+								moduleExports += `
+	${modelName.singular}Query,`
 							}
 							if (args['--mq'] || args['-m']) {
 								fileContent += `
 
-export const ${modelName.singular}Mutation = extendType({
+${args['--js'] ? '' : 'export '}const ${modelName.singular}Mutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.crud.createOne${model}()
@@ -100,9 +118,17 @@ export const ${modelName.singular}Mutation = extendType({
     t.crud.deleteMany${model}()
   },
 })`;
+								moduleExports += `
+	${modelName.singular}Mutation,`
 							}
 							if (!fs.existsSync(dir)) {
 								fs.mkdirSync(dir);
+							}
+							if(args['--js']) {
+								fileContent += `
+module.exports = {
+${moduleExports}
+}`;
 							}
 							fs.writeFile(dir + fileName, fileContent, () => {});
 							fileContent = '';
@@ -111,7 +137,11 @@ export const ${modelName.singular}Mutation = extendType({
 					}
 				}
 			});
-			fs.writeFile(dir + 'index.ts', index, () => {});
+			if(args['--js']) {
+				index = `module.exports = {
+${index}}`;
+			}
+			fs.writeFile(dir + `index.${args['--js'] ? 'js': 'ts'}`, index, () => {});
 			console.log('Created files success');
 		} else {
 			console.log(err);
@@ -129,6 +159,7 @@ function help() {
   -q       add this option to create Queries
   -f       add this option to add {filtering: true} option to Queries
   -o       add this option to add {ordering: true} option to Queries
+  --js     create javascript version
   `;
 	console.log(helpContent);
 }

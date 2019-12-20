@@ -20,6 +20,7 @@ npm i create-nexus-type --save-dev
   -q       add this option to create Queries
   -f       add this option to add {filtering: true} option to Queries
   -o       add this option to add {ordering: true} option to Queries
+  --js     create javascript version
 ```
 
 ### Example
