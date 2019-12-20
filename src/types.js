@@ -39,7 +39,7 @@ function cli() {
                 ? `export interface ${filteredArray[1]} {`
                 : `enum ${filteredArray[1]} {`;
             inModel = filteredArray[0];
-          } else if (inModel && !filteredArray[0].includes('//')) {
+          } else if (inModel && !filteredArray[0].includes('//') && !filteredArray[0].includes("@@")) {
             if (filteredArray[0] !== '}') {
               if (inModel === 'enum') {
                 fileContent += `
