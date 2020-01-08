@@ -15,6 +15,7 @@ function getArgs() {
 		'-f': Boolean,
 		'-o': Boolean,
 		'--js': Boolean,		
+		'--mjs': Boolean,	
 		'-h': '--help'
 	});
 	return {
@@ -47,24 +48,33 @@ function cli() {
 						if(args['--js']) {
 							index += `    ...require('./${filteredArray[1]}'),
 `;
+						} if(args['--mjs']) {
+							index += `export * from './${filteredArray[1]}.js';
+`;	
 						} else {
 							index += `export * from './${filteredArray[1]}';
 `;							
 						}
-						fileName = `${filteredArray[1]}.${args['--js'] ? 'js': 'ts'}`;
+						fileName = `${filteredArray[1]}.${args['--js'] || args['--mjs'] ? 'js': 'ts'}`;
 						if(args['--js']) {
 							fileContent = `const { objectType${
 							args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
 						} } = require('nexus')
+
 `;
+						} else if(args['--mjs']) {
+							fileContent = `import nexus from 'nexus'
+const { objectType${args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''} } = nexus
+					
+`;							
 					    } else {
 							fileContent = `import { objectType${
 								args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
 							} } from 'nexus'	
 
-export `;							
+`;							
 						}
-						fileContent += `const ${filteredArray[1]} = objectType({
+						fileContent += `export const ${filteredArray[1]} = objectType({
   name: '${filteredArray[1]}',
   definition(t) {`;
   						moduleExports = `	${filteredArray[1]},`
@@ -141,7 +151,7 @@ ${moduleExports}
 				index = `module.exports = {
 ${index}}`;
 			}
-			fs.writeFile(dir + `index.${args['--js'] ? 'js': 'ts'}`, index, () => {});
+			fs.writeFile(dir + `index.${args['--js'] || args['--mjs'] ? 'js': 'ts'}`, index, () => {});
 			console.log('Created files success');
 		} else {
 			console.log(err);
@@ -160,6 +170,7 @@ function help() {
   -f       add this option to add {filtering: true} option to Queries
   -o       add this option to add {ordering: true} option to Queries
   --js     create javascript version
+  --mjs    create es modules version  
   `;
 	console.log(helpContent);
 }
