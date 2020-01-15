@@ -6,7 +6,7 @@ This is Cli tool to Create nexus type for Prisma projects. When you try to upgra
 
 ```
 yarn add -D create-nexus-type
-or 
+or
 npm i create-nexus-type --save-dev
 ```
 
@@ -15,13 +15,13 @@ npm i create-nexus-type --save-dev
 ```
   --schema To add schema file path if you not run command in root of project
   --outDir Created files output dir default src/types
-  -mq      add this option to create Queries and Mutations for models 
+  -mq      add this option to create Queries and Mutations for models
   -m       add this option to create Mutations
   -q       add this option to create Queries
   -f       add this option to add {filtering: true} option to Queries
   -o       add this option to add {ordering: true} option to Queries
   --js     create javascript version
-  --mjs    create es modules version   
+  --mjs    create es modules version
 ```
 
 ### Example
@@ -34,19 +34,19 @@ generator photonjs {
 }
 
 model User {
-  id        String   @id @unique @default(cuid())
+  id        String   @id @default(cuid())
   email     String   @unique
   birthDate DateTime
   posts     Post[]
 }
 
 model Post {
-  id     String @id @unique @default(cuid())
+  id     String @id @default(cuid())
   author User[]
 }
 ```
 
-run 
+run
 
 ```
 npx cnt
@@ -56,41 +56,41 @@ OutPut
 
 ```ts
 // User.ts
-import { objectType } from 'nexus'
+import { objectType } from 'nexus';
 
 export const User = objectType({
   name: 'User',
   definition(t) {
-    t.model.id()
-    t.model.email()
-    t.model.birthDate()
-    t.model.posts()
-  },
-})
+    t.model.id();
+    t.model.email();
+    t.model.birthDate();
+    t.model.posts();
+  }
+});
 ```
 
 ```ts
 // Post.ts
-import { objectType } from 'nexus'
+import { objectType } from 'nexus';
 
 export const Post = objectType({
   name: 'Post',
   definition(t) {
-    t.model.id()
-    t.model.author()
-  },
-})
+    t.model.id();
+    t.model.author();
+  }
+});
 ```
 
 ```ts
 // index.ts
-export * from './User'
-export * from './Post'
+export * from './User';
+export * from './Post';
 ```
 
-## Create Queries and Mutations 
+## Create Queries and Mutations
 
-run 
+run
 
 ```
 npx cnt --mq -f -o
@@ -99,43 +99,43 @@ npx cnt --mq -f -o
 OutPut
 
 ```ts
-import { objectType, extendType } from 'nexus'
+import { objectType, extendType } from 'nexus';
 
 export const User = objectType({
   name: 'User',
   definition(t) {
-    t.model.id()
-    t.model.email()
-    t.model.birthDate()
-    t.model.posts()
-  },
-})
+    t.model.id();
+    t.model.email();
+    t.model.birthDate();
+    t.model.posts();
+  }
+});
 
 export const userQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.crud.user()
-    t.crud.users({ filtering: true, ordering: true })
-  },
-})
+    t.crud.user();
+    t.crud.users({ filtering: true, ordering: true });
+  }
+});
 
 export const userMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.crud.createOneUser()
-    t.crud.updateOneUser()
-    t.crud.upsertOneUser()
-    t.crud.deleteOneUser()
+    t.crud.createOneUser();
+    t.crud.updateOneUser();
+    t.crud.upsertOneUser();
+    t.crud.deleteOneUser();
 
-    t.crud.updateManyUser()
-    t.crud.deleteManyUser()
-  },
-})
+    t.crud.updateManyUser();
+    t.crud.deleteManyUser();
+  }
+});
 ```
 
 ## Create TypeScript types
 
-And have another option to create TypeScript types to use for your work 
+And have another option to create TypeScript types to use for your work
 
 ### Command options for `create-types`
 
@@ -155,7 +155,7 @@ generator photonjs {
 }
 
 model User {
-  id        String   @id @unique @default(cuid())
+  id        String   @id @default(cuid())
   email     String   @unique
   birthDate DateTime?
   role      UserRole
@@ -163,7 +163,7 @@ model User {
 }
 
 model Post {
-  id     String @id @unique @default(cuid())
+  id     String @id @default(cuid())
   author User[]
 }
 
@@ -173,12 +173,11 @@ enum UserRole {
 }
 ```
 
-run 
+run
 
 ```
 npx create-types
 ```
-
 
 OutPut
 
@@ -199,7 +198,7 @@ export interface Post {
 
 enum UserRole {
   USER = 'USER',
-  ADMIN = 'ADMIN',
+  ADMIN = 'ADMIN'
 }
 ```
 
@@ -207,4 +206,4 @@ enum UserRole {
 
 Didn't find something here? Look through the [issues](https://github.com/AhmedElywa/create-nexus-type/issues) or simply drop us a line at <ahmed.elywa@icloud.com>.
 
-# Like my tool give me star 
+# Like my tool give me star

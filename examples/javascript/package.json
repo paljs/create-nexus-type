@@ -1,0 +1,15 @@
+{
+  "name": "create-nexus-type-javascript",
+  "version": "1.1.4",
+  "description": "Create nexus types from Prisma2 schema ",
+  "repository": "https://github.com/AhmedElywa/create-nexus-type.git",
+  "author": "Ahmed Elywa",
+  "license": "MIT",
+  "scripts": {
+    "cnt-js": "cnt --mq -f -o --js",
+    "cnt-mjs": "cnt --mq -f -o --mjs"
+  },
+  "devDependencies": {
+    "create-nexus-type": "^1.1.4"
+  }
+}
