@@ -1,54 +1,55 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const arg = require('arg');
-const pluralize = require('pluralize');
+const fs = require("fs");
+const arg = require("arg");
+const pluralize = require("pluralize");
 
 function getArgs() {
   const args = arg({
-    '--help': Boolean,
-    '--schema': String,
-    '--outDir': String,
-    '--mq': Boolean,
-    '-m': Boolean,
-    '-q': Boolean,
-    '-f': Boolean,
-    '-o': Boolean,
-    '--js': Boolean,
-    '--mjs': Boolean,
-    '-h': '--help'
+    "--help": Boolean,
+    "--schema": String,
+    "--outDir": String,
+    "--mq": Boolean,
+    "-m": Boolean,
+    "-q": Boolean,
+    "-f": Boolean,
+    "-o": Boolean,
+    "--js": Boolean,
+    "--mjs": Boolean,
+    "-h": "--help"
   });
   return {
     ...args,
-    '--schema': args['--schema'] || 'prisma/schema.prisma',
-    '--outDir': args['--outDir'] || 'src/types'
+    "--schema": args["--schema"] || "prisma/schema.prisma",
+    "--outDir": args["--outDir"] || "src/types"
   };
 }
 
 function cli() {
   const args = getArgs();
-  if (args['--help']) {
+  if (args["--help"]) {
     help();
     return;
   }
-  fs.readFile(args['--schema'], { encoding: 'utf-8' }, function(err, data) {
+  fs.readFile(args["--schema"], { encoding: "utf-8" }, function(err, data) {
     if (!err) {
-      let fileContent = '';
-      let fileName = '';
-      let index = '';
-      let moduleExports = '';
-      const dir = args['--outDir'] + '/';
+      let fileContent = "";
+      let fileName = "";
+      let index = "";
+      let moduleExports = "";
+      const dir = args["--outDir"] + "/";
       const lines = data.split(`
 `);
       lines.map(line => {
-        if (line !== '') {
-          const lineArray = line.split(' ');
+        if (line !== "") {
+          const clearedLine = line.replace(/[\n\r]/g, "");
+          const lineArray = clearedLine.split(" ");
           const filteredArray = lineArray.filter(v => v);
-          if (filteredArray[0] === 'model') {
-            if (args['--js']) {
+          if (filteredArray[0] === "model") {
+            if (args["--js"]) {
               index += `  ...require('./${filteredArray[1]}'),
 `;
-            } else if (args['--mjs']) {
+            } else if (args["--mjs"]) {
               index += `export * from './${filteredArray[1]}.js';
 `;
             } else {
@@ -56,24 +57,24 @@ function cli() {
 `;
             }
             fileName = `${filteredArray[1]}.${
-              args['--js'] || args['--mjs'] ? 'js' : 'ts'
+              args["--js"] || args["--mjs"] ? "js" : "ts"
             }`;
-            if (args['--js']) {
+            if (args["--js"]) {
               fileContent = `const { objectType${
-                args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
+                args["--mq"] || args["-q"] || args["-m"] ? ", extendType" : ""
               } } = require('nexus')
 
 `;
-            } else if (args['--mjs']) {
+            } else if (args["--mjs"]) {
               fileContent = `import nexus from 'nexus'
 const { objectType${
-                args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
+                args["--mq"] || args["-q"] || args["-m"] ? ", extendType" : ""
               } } = nexus
 					
 `;
             } else {
               fileContent = `import { objectType${
-                args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
+                args["--mq"] || args["-q"] || args["-m"] ? ", extendType" : ""
               } } from 'nexus'	
 
 `;
@@ -82,49 +83,49 @@ const { objectType${
   name: '${filteredArray[1]}',
   definition(t) {`;
             moduleExports = `	${filteredArray[1]},`;
-          } else if (fileContent !== '' && !filteredArray[0].includes('//')) {
+          } else if (fileContent !== "" && !filteredArray[0].includes("//")) {
             if (
-              filteredArray[0] !== '}' &&
-              filteredArray[0] !== '{' &&
-              !filteredArray[0].includes('@@')
+              filteredArray[0] !== "}" &&
+              filteredArray[0] !== "{" &&
+              !filteredArray[0].includes("@@")
             ) {
               fileContent += `
     t.model.${filteredArray[0]}()`;
-            } else if (filteredArray[0] === '}') {
+            } else if (filteredArray[0] === "}") {
               fileContent += `
   },
 })`;
-              const model = fileName.split('.')[0];
+              const model = fileName.split(".")[0];
               const newName = model.charAt(0).toLowerCase() + model.slice(1);
               const modelName = {
                 plural: pluralize(newName),
                 singular: newName
               };
-              if (args['--mq'] || args['-q']) {
+              if (args["--mq"] || args["-q"]) {
                 fileContent += `
 
-${args['--js'] ? '' : 'export '}const ${modelName.singular}Query = extendType({
+${args["--js"] ? "" : "export "}const ${modelName.singular}Query = extendType({
   type: 'Query',
   definition(t) {
     t.crud.${modelName.singular}()
     t.crud.${modelName.plural}(${
-                  args['-f'] && args['-o']
-                    ? '{ filtering: true, ordering: true }'
-                    : args['-f']
-                    ? '{ filtering: true }'
-                    : args['-o']
-                    ? '{ ordering: true }'
-                    : ''
+                  args["-f"] && args["-o"]
+                    ? "{ filtering: true, ordering: true }"
+                    : args["-f"]
+                    ? "{ filtering: true }"
+                    : args["-o"]
+                    ? "{ ordering: true }"
+                    : ""
                 })
   },
 })`;
                 moduleExports += `
 	${modelName.singular}Query,`;
               }
-              if (args['--mq'] || args['-m']) {
+              if (args["--mq"] || args["-m"]) {
                 fileContent += `
 
-${args['--js'] ? '' : 'export '}const ${
+${args["--js"] ? "" : "export "}const ${
                   modelName.singular
                 }Mutation = extendType({
   type: 'Mutation',
@@ -144,29 +145,29 @@ ${args['--js'] ? '' : 'export '}const ${
               if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir);
               }
-              if (args['--js']) {
+              if (args["--js"]) {
                 fileContent += `
 module.exports = {
 ${moduleExports}
 }`;
               }
               fs.writeFile(dir + fileName, fileContent, () => {});
-              fileContent = '';
-              fileName = '';
+              fileContent = "";
+              fileName = "";
             }
           }
         }
       });
-      if (args['--js']) {
+      if (args["--js"]) {
         index = `module.exports = {
 ${index}}`;
       }
       fs.writeFile(
-        dir + `index.${args['--js'] || args['--mjs'] ? 'js' : 'ts'}`,
+        dir + `index.${args["--js"] || args["--mjs"] ? "js" : "ts"}`,
         index,
         () => {}
       );
-      console.log('Created files success');
+      console.log("Created files success");
     } else {
       console.log(err);
     }
