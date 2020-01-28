@@ -42,7 +42,8 @@ function cli() {
 `);
       lines.map(line => {
         if (line !== '') {
-          const lineArray = line.split(' ');
+          const clearedLine = line.replace(/[\n\r]/g, '');
+          const lineArray = clearedLine.split(' ');
           const filteredArray = lineArray.filter(v => v);
           if (filteredArray[0] === 'model') {
             if (args['--js']) {
