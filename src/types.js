@@ -6,11 +6,11 @@ const arg = require('arg');
 function getArgs() {
   const args = arg({
     '--schema': String,
-    '--outDir': String,
+    '--outDir': String
   });
   return {
     '--schema': args['--schema'] || 'prisma/schema.prisma',
-    '--outDir': args['--outDir'] || 'src/generated',
+    '--outDir': args['--outDir'] || 'src/generated'
   };
 }
 
@@ -27,7 +27,7 @@ function cli() {
         if (line !== '') {
           const lineArray = line.split(' ');
           const filteredArray = lineArray.filter(v => v);
-          if (['model', 'enum'].includes(filteredArray[0])) {
+          if (['model', 'enum'].includes(filteredArray[0]) && !inModel) {
             fileContent +=
               fileContent !== ''
                 ? `
@@ -35,16 +35,23 @@ function cli() {
 `
                 : '';
             fileContent +=
-              filteredArray[0] === 'model' ? `export interface ${filteredArray[1]} {` : `enum ${filteredArray[1]} {`;
+              filteredArray[0] === 'model'
+                ? `export interface ${filteredArray[1]} {`
+                : `enum ${filteredArray[1]} {`;
             inModel = filteredArray[0];
-          } else if (inModel && !filteredArray[0].includes('//') && !filteredArray[0].includes('@@')) {
+          } else if (
+            inModel &&
+            !filteredArray[0].includes('//') &&
+            !filteredArray[0].includes('@@')
+          ) {
             if (filteredArray[0] !== '}') {
               if (inModel === 'enum') {
                 fileContent += `
   ${filteredArray[0]} = '${filteredArray[0]}',`;
               } else {
                 const type = types[filteredArray[1].replace('?', '')]
-                  ? types[filteredArray[1].replace('?', '')] + (filteredArray[1].includes('?') ? ' | null' : '')
+                  ? types[filteredArray[1].replace('?', '')] +
+                    (filteredArray[1].includes('?') ? ' | null' : '')
                   : filteredArray[1].replace('?', ' | null');
                 fileContent += `
   ${filteredArray[0]}: ${type};`;
@@ -76,6 +83,6 @@ const types = {
   'Float[]': 'number[]',
   'String[]': 'string[]',
   'Boolean[]': 'boolean[]',
-  DateTime: 'Date',
+  DateTime: 'Date'
 };
 cli();
