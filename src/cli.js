@@ -45,7 +45,7 @@ function cli() {
           const clearedLine = line.replace(/[\n\r]/g, '');
           const lineArray = clearedLine.split(' ');
           const filteredArray = lineArray.filter(v => v);
-          if (filteredArray[0] === 'model') {
+          if (filteredArray[0] === 'model' && fileContent === '') {
             if (args['--js']) {
               index += `  ...require('./${filteredArray[1]}'),
 `;
