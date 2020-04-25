@@ -62,11 +62,11 @@ function cli() {
             if (args['--js']) {
               fileContent = `const { objectType${
                 args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
-              } } = require('nexus')
+              } } = require('@nexus/schema')
 
 `;
             } else if (args['--mjs']) {
-              fileContent = `import nexus from 'nexus'
+              fileContent = `import nexus from '@nexus/schema'
 const { objectType${
                 args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
               } } = nexus
@@ -75,7 +75,7 @@ const { objectType${
             } else {
               fileContent = `import { objectType${
                 args['--mq'] || args['-q'] || args['-m'] ? ', extendType' : ''
-              } } from 'nexus'	
+              } } from '@nexus/schema'	
 
 `;
             }
