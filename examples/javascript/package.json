@@ -6,10 +6,10 @@
   "author": "Ahmed Elywa",
   "license": "MIT",
   "scripts": {
-    "cnt-js": "cnt --mq -f -o --js",
-    "cnt-mjs": "cnt --mq -f -o --mjs"
+    "cnt-js": "cnt -s --mq -f -o --js",
+    "cnt-mjs": "cnt -s --mq -f -o --mjs"
   },
   "devDependencies": {
-    "create-nexus-type": "^1.1.4"
+    "create-nexus-type": "^1.2.0"
   }
 }

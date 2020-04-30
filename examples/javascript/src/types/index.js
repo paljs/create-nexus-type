@@ -1,4 +1,2 @@
-module.exports = {
-  ...require('./User'),
-  ...require('./Post'),
-}
+export * from './User'
+export * from './Post'

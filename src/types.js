@@ -16,7 +16,7 @@ function getArgs() {
 
 function cli() {
   const args = getArgs();
-  fs.readFile(args['--schema'], { encoding: 'utf-8' }, function(err, data) {
+  fs.readFile(args['--schema'], {encoding: 'utf-8'}, function (err, data) {
     if (!err) {
       let fileContent = '';
       let inModel = false;
@@ -51,7 +51,7 @@ function cli() {
               } else {
                 const type = types[filteredArray[1].replace('?', '')]
                   ? types[filteredArray[1].replace('?', '')] +
-                    (filteredArray[1].includes('?') ? ' | null' : '')
+                  (filteredArray[1].includes('?') ? ' | null' : '')
                   : filteredArray[1].replace('?', ' | null');
                 fileContent += `
   ${filteredArray[0]}: ${type};`;
@@ -67,13 +67,15 @@ function cli() {
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
       }
-      fs.writeFile(dir + 'types.ts', fileContent, () => {});
+      fs.writeFile(dir + 'types.ts', fileContent, () => {
+      });
       console.log('Created files success');
     } else {
       console.log(err);
     }
   });
 }
+
 const types = {
   Int: 'number',
   Float: 'number',

@@ -1,4 +1,4 @@
-const { objectType, extendType } = require('nexus')
+import { objectType, extendType } from '@nexus/schema'
 
 export const Post = objectType({
   name: 'Post',
@@ -8,7 +8,7 @@ export const Post = objectType({
   },
 })
 
-const postQuery = extendType({
+export const postQuery = extendType({
   type: 'Query',
   definition(t) {
     t.crud.post()
@@ -16,7 +16,7 @@ const postQuery = extendType({
   },
 })
 
-const postMutation = extendType({
+export const postMutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.crud.createOnePost()
@@ -28,8 +28,3 @@ const postMutation = extendType({
     t.crud.deleteManyPost()
   },
 })
-module.exports = {
-	Post,
-	postQuery,
-	postMutation,
-}

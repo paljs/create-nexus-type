@@ -1,6 +1,6 @@
-import { objectType, extendType } from 'nexus'	
+import { schema } from 'nexus'
 
-export const Post = objectType({
+schema.objectType({
   name: 'Post',
   definition(t) {
     t.model.id()
@@ -8,7 +8,7 @@ export const Post = objectType({
   },
 })
 
-export const postQuery = extendType({
+schema.extendType({
   type: 'Query',
   definition(t) {
     t.crud.post()
@@ -16,7 +16,7 @@ export const postQuery = extendType({
   },
 })
 
-export const postMutation = extendType({
+schema.extendType({
   type: 'Mutation',
   definition(t) {
     t.crud.createOnePost()

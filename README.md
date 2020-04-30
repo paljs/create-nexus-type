@@ -15,6 +15,7 @@ npm i create-nexus-type --save-dev
 ```
   --schema To add schema file path if you not run command in root of project
   --outDir Created files output dir default src/types
+  -s       add this option to use @nexus/schema package
   -mq      add this option to create Queries and Mutations for models
   -m       add this option to create Mutations
   -q       add this option to create Queries
@@ -29,8 +30,13 @@ npm i create-nexus-type --save-dev
 ```prisma
 // schema.prisma
 
-generator photonjs {
-  provider = "photonjs"
+datasource postgresql {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
 
 model User {
@@ -49,51 +55,90 @@ model Post {
 run
 
 ```
-npx cnt
+npx cnt --mq -f -o
 ```
 
 OutPut
 
 ```ts
 // User.ts
-import { objectType } from 'nexus';
+import { schema } from 'nexus'
 
-export const User = objectType({
+schema.objectType({
   name: 'User',
   definition(t) {
-    t.model.id();
-    t.model.email();
-    t.model.birthDate();
-    t.model.posts();
-  }
-});
+    t.model.id()
+    t.model.email()
+    t.model.birthDate()
+    t.model.role()
+    t.model.posts()
+  },
+})
+
+schema.extendType({
+  type: 'Query',
+  definition(t) {
+    t.crud.user()
+    t.crud.users({ filtering: true, ordering: true })
+  },
+})
+
+schema.extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.crud.createOneUser()
+    t.crud.updateOneUser()
+    t.crud.upsertOneUser()
+    t.crud.deleteOneUser()
+
+    t.crud.updateManyUser()
+    t.crud.deleteManyUser()
+  },
+})
+
 ```
 
 ```ts
 // Post.ts
-import { objectType } from 'nexus';
+import { schema } from 'nexus'
 
-export const Post = objectType({
+schema.objectType({
   name: 'Post',
   definition(t) {
-    t.model.id();
-    t.model.author();
-  }
-});
+    t.model.id()
+    t.model.author()
+  },
+})
+
+schema.extendType({
+  type: 'Query',
+  definition(t) {
+    t.crud.post()
+    t.crud.posts({ filtering: true, ordering: true })
+  },
+})
+
+schema.extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.crud.createOnePost()
+    t.crud.updateOnePost()
+    t.crud.upsertOnePost()
+    t.crud.deleteOnePost()
+
+    t.crud.updateManyPost()
+    t.crud.deleteManyPost()
+  },
+})
+
 ```
 
-```ts
-// index.ts
-export * from './User';
-export * from './Post';
-```
-
-## Create Queries and Mutations
+## Use `@nexus/schema` version
 
 run
 
 ```
-npx cnt --mq -f -o
+npx cnt -s --mq -f -o
 ```
 
 OutPut
@@ -150,8 +195,13 @@ And have another option to create TypeScript types to use for your work
 ```prisma
 // schema.prisma
 
-generator photonjs {
-  provider = "photonjs"
+datasource postgresql {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
 
 model User {

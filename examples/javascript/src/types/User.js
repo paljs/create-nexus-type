@@ -1,4 +1,4 @@
-const { objectType, extendType } = require('nexus')
+import { objectType, extendType } from '@nexus/schema'
 
 export const User = objectType({
   name: 'User',
@@ -11,7 +11,7 @@ export const User = objectType({
   },
 })
 
-const userQuery = extendType({
+export const userQuery = extendType({
   type: 'Query',
   definition(t) {
     t.crud.user()
@@ -19,7 +19,7 @@ const userQuery = extendType({
   },
 })
 
-const userMutation = extendType({
+export const userMutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.crud.createOneUser()
@@ -31,8 +31,3 @@ const userMutation = extendType({
     t.crud.deleteManyUser()
   },
 })
-module.exports = {
-	User,
-	userQuery,
-	userMutation,
-}

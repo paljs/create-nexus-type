@@ -1,6 +1,6 @@
-import { objectType, extendType } from 'nexus'	
+import { schema } from 'nexus'
 
-export const User = objectType({
+schema.objectType({
   name: 'User',
   definition(t) {
     t.model.id()
@@ -11,7 +11,7 @@ export const User = objectType({
   },
 })
 
-export const userQuery = extendType({
+schema.extendType({
   type: 'Query',
   definition(t) {
     t.crud.user()
@@ -19,7 +19,7 @@ export const userQuery = extendType({
   },
 })
 
-export const userMutation = extendType({
+schema.extendType({
   type: 'Mutation',
   definition(t) {
     t.crud.createOneUser()
