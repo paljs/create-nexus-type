@@ -33,13 +33,12 @@ function cli() {
     help();
     return;
   }
-  convertSchema(args['--schema'], (schema) => {
-    if (args['-s']) {
-      buildForSchemaVersion(schema, args);
-    } else {
-      buildForNexusVersion(schema, args);
-    }
-  });
+  const schema = convertSchema(args['--schema']);
+  if (args['-s']) {
+    buildForSchemaVersion(schema, args);
+  } else {
+    buildForNexusVersion(schema, args);
+  }
 }
 
 function help() {
