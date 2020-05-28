@@ -33,7 +33,7 @@ function cli() {
     help();
     return;
   }
-  const schema = convertSchema(args['--schema']);
+  const schema = convertSchema.default(args['--schema']);
   if (args['-s']) {
     buildForSchemaVersion(schema, args);
   } else {
