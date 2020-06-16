@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const arg = require('arg');
-const convertSchema = require('@prisma-tools/schema');
+const { convertSchemaToObject } = require('@prisma-tools/schema');
 const buildForSchemaVersion = require('./schema');
 const buildForNexusVersion = require('./nexus');
 
@@ -33,7 +33,7 @@ function cli() {
     help();
     return;
   }
-  const schema = convertSchema.default(args['--schema']);
+  const schema = convertSchemaToObject(args['--schema']);
   if (args['-s']) {
     buildForSchemaVersion(schema, args);
   } else {

@@ -11,7 +11,7 @@
     "create-types": "src/types.js"
   },
   "dependencies": {
-    "@prisma-tools/schema": "^0.0.4",
+    "@prisma-tools/schema": "^0.0.11",
     "arg": "^4.1.2",
     "pluralize": "^8.0.0",
     "prettier": "^2.0.5"
