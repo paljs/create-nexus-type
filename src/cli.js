@@ -13,6 +13,7 @@ function getArgs() {
     '--mq': Boolean,
     '-m': Boolean,
     '-q': Boolean,
+    '-c': Boolean,
     '-f': Boolean,
     '-o': Boolean,
     '-s': Boolean,
@@ -50,6 +51,7 @@ function help() {
   -mq      add this option to create Queries and Mutations for models 
   -m       add this option to create Mutations
   -q       add this option to create Queries
+  -c       add this option to create Queries Count
   -f       add this option to add {filtering: true} option to Queries
   -o       add this option to add {ordering: true} option to Queries
   --js     create javascript version

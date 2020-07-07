@@ -1,2 +1,4 @@
-export * from './User'
-export * from './Post'
+module.exports = {
+  ...require('./User'),
+  ...require('./Post'),
+}
