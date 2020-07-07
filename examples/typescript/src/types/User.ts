@@ -16,6 +16,17 @@ schema.extendType({
   definition(t) {
     t.crud.user()
     t.crud.users({ filtering: true, ordering: true })
+
+    t.field('usersCount', {
+      type: 'BatchPayload',
+      args: {
+        where: 'UserWhereInput',
+      },
+      async resolve(_root, { where }, ctx) {
+        const count = await ctx.db.user.count({ where })
+        return { count }
+      },
+    })
   },
 })
 

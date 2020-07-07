@@ -24,6 +24,22 @@ function buildForNexusVersion(schema, args) {
       plural: pluralize(newName),
       singular: newName,
     };
+
+    let queryCount=''
+    if(args['-c']) {
+      queryCount = `
+      t.field('${modelName.plural}Count', {
+        type: 'BatchPayload',
+        args: {
+          where: '${model.name}WhereInput',
+        },
+        async resolve(_root, { where }, ctx) {
+          const count = await ctx.db.${modelName.singular}.count({ where })
+          return { count }
+        },
+      })`;
+    }
+
     if (args['--mq'] || args['-q']) {
       fileContent += `
 
@@ -40,6 +56,7 @@ schema.extendType({
           ? '{ ordering: true }'
           : ''
       })
+${queryCount}
   },
 })`;
     }

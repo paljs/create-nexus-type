@@ -19,6 +19,7 @@ npm i create-nexus-type --save-dev
   -mq      add this option to create Queries and Mutations for models
   -m       add this option to create Mutations
   -q       add this option to create Queries
+  -c       add this option to create Queries Count
   -f       add this option to add {filtering: true} option to Queries
   -o       add this option to add {ordering: true} option to Queries
   --js     create javascript version
@@ -55,7 +56,7 @@ model Post {
 run
 
 ```
-npx cnt --mq -f -o
+npx cnt --mq -c -f -o
 ```
 
 OutPut
@@ -80,6 +81,17 @@ schema.extendType({
   definition(t) {
     t.crud.user()
     t.crud.users({ filtering: true, ordering: true })
+
+    t.field('usersCount', {
+      type: 'BatchPayload',
+      args: {
+        where: 'UserWhereInput',
+      },
+      async resolve(_root, { where }, ctx) {
+        const count = await ctx.db.user.count({ where })
+        return { count }
+      },
+    })
   },
 })
 
@@ -115,6 +127,17 @@ schema.extendType({
   definition(t) {
     t.crud.post()
     t.crud.posts({ filtering: true, ordering: true })
+
+    t.field('postsCount', {
+      type: 'BatchPayload',
+      args: {
+        where: 'PostWhereInput',
+      },
+      async resolve(_root, { where }, ctx) {
+        const count = await ctx.db.post.count({ where })
+        return { count }
+      },
+    })
   },
 })
 
@@ -138,7 +161,7 @@ schema.extendType({
 run
 
 ```
-npx cnt -s --mq -f -o
+npx cnt -s --mq -c -f -o
 ```
 
 OutPut
@@ -161,6 +184,17 @@ export const userQuery = extendType({
   definition(t) {
     t.crud.user();
     t.crud.users({ filtering: true, ordering: true });
+
+    t.field('usersCount', {
+      type: 'BatchPayload',
+      args: {
+        where: 'UserWhereInput',
+      },
+      async resolve(_root, { where }, ctx) {
+        const count = await ctx.prisma.user.count({ where })
+        return { count }
+      },
+    });
   }
 });
 

@@ -1,4 +1,4 @@
-import { objectType, extendType } from '@nexus/schema'
+const { objectType, extendType } = require('@nexus/schema')
 
 export const Post = objectType({
   name: 'Post',
@@ -8,15 +8,26 @@ export const Post = objectType({
   },
 })
 
-export const postQuery = extendType({
+const postQuery = extendType({
   type: 'Query',
   definition(t) {
     t.crud.post()
     t.crud.posts({ filtering: true, ordering: true })
+
+    t.field('postsCount', {
+      type: 'BatchPayload',
+      args: {
+        where: 'PostWhereInput',
+      },
+      async resolve(_root, { where }, ctx) {
+        const count = await ctx.prisma.post.count({ where })
+        return { count }
+      },
+    })
   },
 })
 
-export const postMutation = extendType({
+const postMutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.crud.createOnePost()
@@ -28,3 +39,8 @@ export const postMutation = extendType({
     t.crud.deleteManyPost()
   },
 })
+module.exports = {
+  Post,
+  postQuery,
+  postMutation,
+}

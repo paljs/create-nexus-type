@@ -13,6 +13,17 @@ schema.extendType({
   definition(t) {
     t.crud.post()
     t.crud.posts({ filtering: true, ordering: true })
+
+    t.field('postsCount', {
+      type: 'BatchPayload',
+      args: {
+        where: 'PostWhereInput',
+      },
+      async resolve(_root, { where }, ctx) {
+        const count = await ctx.db.post.count({ where })
+        return { count }
+      },
+    })
   },
 })
 

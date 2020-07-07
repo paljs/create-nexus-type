@@ -1,4 +1,4 @@
-import { objectType, extendType } from '@nexus/schema'
+const { objectType, extendType } = require('@nexus/schema')
 
 export const User = objectType({
   name: 'User',
@@ -11,15 +11,26 @@ export const User = objectType({
   },
 })
 
-export const userQuery = extendType({
+const userQuery = extendType({
   type: 'Query',
   definition(t) {
     t.crud.user()
     t.crud.users({ filtering: true, ordering: true })
+
+    t.field('usersCount', {
+      type: 'BatchPayload',
+      args: {
+        where: 'UserWhereInput',
+      },
+      async resolve(_root, { where }, ctx) {
+        const count = await ctx.prisma.user.count({ where })
+        return { count }
+      },
+    })
   },
 })
 
-export const userMutation = extendType({
+const userMutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.crud.createOneUser()
@@ -31,3 +42,8 @@ export const userMutation = extendType({
     t.crud.deleteManyUser()
   },
 })
+module.exports = {
+  User,
+  userQuery,
+  userMutation,
+}

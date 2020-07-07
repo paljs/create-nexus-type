@@ -6,10 +6,10 @@
   "author": "Ahmed Elywa",
   "license": "MIT",
   "scripts": {
-    "cnt": "cnt --mq -f -o",
+    "cnt": "cnt --mq -f -o -c",
     "types": "create-types"
   },
   "devDependencies": {
-    "create-nexus-type": "^1.2.0"
+    "create-nexus-type": "file:../../"
   }
 }
