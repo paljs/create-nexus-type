@@ -1,6 +1,6 @@
 
-generator photonjs {
-  provider = "photonjs"
+generator client {
+  provider = "prisma-client-js"
 }
 
 model User {

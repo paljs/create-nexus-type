@@ -22,9 +22,8 @@ const userQuery = extendType({
       args: {
         where: 'UserWhereInput',
       },
-      async resolve(_root, { where }, ctx) {
-        const count = await ctx.prisma.user.count({ where })
-        return { count }
+      async resolve(_root, args, ctx) {
+        return ctx.db.user.count(args)
       },
     })
   },

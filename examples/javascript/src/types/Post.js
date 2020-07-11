@@ -19,9 +19,8 @@ const postQuery = extendType({
       args: {
         where: 'PostWhereInput',
       },
-      async resolve(_root, { where }, ctx) {
-        const count = await ctx.prisma.post.count({ where })
-        return { count }
+      async resolve(_root, args, ctx) {
+        return ctx.db.post.count(args)
       },
     })
   },

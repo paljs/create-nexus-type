@@ -41,13 +41,12 @@ function buildForSchemaVersion(schema, args) {
     if(args['-c']) {
       queryCount = `
       t.field('${modelName.plural}Count', {
-        type: 'BatchPayload',
+        type: 'Int',
         args: {
           where: '${model.name}WhereInput',
         },
-        async resolve(_root, { where }, ctx) {
-          const count = await ctx.db.${modelName.singular}.count({ where })
-          return { count }
+        async resolve(_root, args, ctx) {
+          return ctx.db.${modelName.singular}.count(args)
         },
       })`;
     }
