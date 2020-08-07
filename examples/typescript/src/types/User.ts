@@ -23,7 +23,7 @@ schema.extendType({
         where: 'UserWhereInput',
       },
       async resolve(_root, args, ctx) {
-        return ctx.db.user.count(args)
+        return ctx.prisma.user.count(args)
       },
     })
   },

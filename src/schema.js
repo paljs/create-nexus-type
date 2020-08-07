@@ -46,7 +46,7 @@ function buildForSchemaVersion(schema, args) {
           where: '${model.name}WhereInput',
         },
         async resolve(_root, args, ctx) {
-          return ctx.db.${modelName.singular}.count(args)
+          return ctx.prisma.${modelName.singular}.count(args)
         },
       })`;
     }

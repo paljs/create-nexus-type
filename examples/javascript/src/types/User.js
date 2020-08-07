@@ -18,12 +18,12 @@ const userQuery = extendType({
     t.crud.users({ filtering: true, ordering: true })
 
     t.field('usersCount', {
-      type: 'BatchPayload',
+      type: 'Int',
       args: {
         where: 'UserWhereInput',
       },
       async resolve(_root, args, ctx) {
-        return ctx.db.user.count(args)
+        return ctx.prisma.user.count(args)
       },
     })
   },

@@ -63,97 +63,93 @@ OutPut
 
 ```ts
 // User.ts
-import { schema } from 'nexus'
+import { schema } from "nexus";
 
 schema.objectType({
-  name: 'User',
+  name: "User",
   definition(t) {
-    t.model.id()
-    t.model.email()
-    t.model.birthDate()
-    t.model.role()
-    t.model.posts()
+    t.model.id();
+    t.model.email();
+    t.model.birthDate();
+    t.model.role();
+    t.model.posts();
   },
-})
+});
 
 schema.extendType({
-  type: 'Query',
+  type: "Query",
   definition(t) {
-    t.crud.user()
-    t.crud.users({ filtering: true, ordering: true })
+    t.crud.user();
+    t.crud.users({ filtering: true, ordering: true });
 
-    t.field('usersCount', {
-      type: 'BatchPayload',
+    t.field("usersCount", {
+      type: "Int",
       args: {
-        where: 'UserWhereInput',
+        where: "UserWhereInput",
       },
-      async resolve(_root, { where }, ctx) {
-        const count = await ctx.db.user.count({ where })
-        return { count }
+      async resolve(_root, args, ctx) {
+        return ctx.prisma.user.count(args);
       },
-    })
+    });
   },
-})
+});
 
 schema.extendType({
-  type: 'Mutation',
+  type: "Mutation",
   definition(t) {
-    t.crud.createOneUser()
-    t.crud.updateOneUser()
-    t.crud.upsertOneUser()
-    t.crud.deleteOneUser()
+    t.crud.createOneUser();
+    t.crud.updateOneUser();
+    t.crud.upsertOneUser();
+    t.crud.deleteOneUser();
 
-    t.crud.updateManyUser()
-    t.crud.deleteManyUser()
+    t.crud.updateManyUser();
+    t.crud.deleteManyUser();
   },
-})
-
+});
 ```
 
 ```ts
 // Post.ts
-import { schema } from 'nexus'
+import { schema } from "nexus";
 
 schema.objectType({
-  name: 'Post',
+  name: "Post",
   definition(t) {
-    t.model.id()
-    t.model.author()
+    t.model.id();
+    t.model.author();
   },
-})
+});
 
 schema.extendType({
-  type: 'Query',
+  type: "Query",
   definition(t) {
-    t.crud.post()
-    t.crud.posts({ filtering: true, ordering: true })
+    t.crud.post();
+    t.crud.posts({ filtering: true, ordering: true });
 
-    t.field('postsCount', {
-      type: 'BatchPayload',
+    t.field("postsCount", {
+      type: "Int",
       args: {
-        where: 'PostWhereInput',
+        where: "PostWhereInput",
       },
-      async resolve(_root, { where }, ctx) {
-        const count = await ctx.db.post.count({ where })
-        return { count }
+      async resolve(_root, args, ctx) {
+        return ctx.prisma.post.count(args);
       },
-    })
+    });
   },
-})
+});
 
 schema.extendType({
-  type: 'Mutation',
+  type: "Mutation",
   definition(t) {
-    t.crud.createOnePost()
-    t.crud.updateOnePost()
-    t.crud.upsertOnePost()
-    t.crud.deleteOnePost()
+    t.crud.createOnePost();
+    t.crud.updateOnePost();
+    t.crud.upsertOnePost();
+    t.crud.deleteOnePost();
 
-    t.crud.updateManyPost()
-    t.crud.deleteManyPost()
+    t.crud.updateManyPost();
+    t.crud.deleteManyPost();
   },
-})
-
+});
 ```
 
 ## Use `@nexus/schema` version
@@ -167,39 +163,38 @@ npx cnt -s --mq -c -f -o
 OutPut
 
 ```ts
-import { objectType, extendType } from 'nexus';
+import { objectType, extendType } from "nexus";
 
 export const User = objectType({
-  name: 'User',
+  name: "User",
   definition(t) {
     t.model.id();
     t.model.email();
     t.model.birthDate();
     t.model.posts();
-  }
+  },
 });
 
 export const userQuery = extendType({
-  type: 'Query',
+  type: "Query",
   definition(t) {
     t.crud.user();
     t.crud.users({ filtering: true, ordering: true });
 
-    t.field('usersCount', {
-      type: 'BatchPayload',
+    t.field("usersCount", {
+      type: "Int",
       args: {
-        where: 'UserWhereInput',
+        where: "UserWhereInput",
       },
-      async resolve(_root, { where }, ctx) {
-        const count = await ctx.prisma.user.count({ where })
-        return { count }
+      async resolve(_root, args, ctx) {
+        return ctx.prisma.user.count(args);
       },
     });
-  }
+  },
 });
 
 export const userMutation = extendType({
-  type: 'Mutation',
+  type: "Mutation",
   definition(t) {
     t.crud.createOneUser();
     t.crud.updateOneUser();
@@ -208,13 +203,13 @@ export const userMutation = extendType({
 
     t.crud.updateManyUser();
     t.crud.deleteManyUser();
-  }
+  },
 });
 ```
 
 ## Create TypeScript types
 
-And have another option to create TypeScript types to use for your work
+Have another option to create TypeScript types to use for your work
 
 ### Command options for `create-types`
 
@@ -281,8 +276,8 @@ export interface Post {
 }
 
 enum UserRole {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
+  USER = "USER",
+  ADMIN = "ADMIN",
 }
 ```
 

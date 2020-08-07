@@ -15,12 +15,12 @@ const postQuery = extendType({
     t.crud.posts({ filtering: true, ordering: true })
 
     t.field('postsCount', {
-      type: 'BatchPayload',
+      type: 'Int',
       args: {
         where: 'PostWhereInput',
       },
       async resolve(_root, args, ctx) {
-        return ctx.db.post.count(args)
+        return ctx.prisma.post.count(args)
       },
     })
   },

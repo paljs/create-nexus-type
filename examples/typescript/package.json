@@ -1,6 +1,6 @@
 {
   "name": "create-nexus-type-typescript",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Create nexus types from Prisma2 schema ",
   "repository": "https://github.com/AhmedElywa/create-nexus-type.git",
   "author": "Ahmed Elywa",
@@ -10,6 +10,6 @@
     "types": "create-types"
   },
   "devDependencies": {
-    "create-nexus-type": "file:../../"
+    "create-nexus-type": "1.2.5"
   }
 }

@@ -20,7 +20,7 @@ schema.extendType({
         where: 'PostWhereInput',
       },
       async resolve(_root, args, ctx) {
-        return ctx.db.post.count(args)
+        return ctx.prisma.post.count(args)
       },
     })
   },

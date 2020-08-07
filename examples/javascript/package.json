@@ -10,6 +10,6 @@
     "cnt-mjs": "cnt -s --mq -f -o --mjs -c"
   },
   "devDependencies": {
-    "create-nexus-type": "file:../../"
+    "create-nexus-type": "1.2.5"
   }
 }
