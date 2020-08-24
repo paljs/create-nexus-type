@@ -1,6 +1,6 @@
 const { objectType, extendType } = require('@nexus/schema')
 
-export const User = objectType({
+const User = objectType({
   name: 'User',
   definition(t) {
     t.model.id()

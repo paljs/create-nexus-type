@@ -20,7 +20,7 @@ function buildForSchemaVersion(schema, args) {
     };
       
       `;
-    fileContent += `export const ${model.name} = objectType({
+    fileContent += `${args['--js'] ? '' : 'export '}const ${model.name} = objectType({
   name: '${model.name}',
   definition(t) {`;
     moduleExports = `	${model.name},`;
