@@ -1,18 +1,18 @@
-import { schema } from 'nexus'
+import { objectType, extendType } from '@nexus/schema';
 
-schema.objectType({
+export const Post = objectType({
   name: 'Post',
   definition(t) {
-    t.model.id()
-    t.model.author()
+    t.model.id();
+    t.model.author();
   },
-})
+});
 
-schema.extendType({
+export const postQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.crud.post()
-    t.crud.posts({ filtering: true, ordering: true })
+    t.crud.post();
+    t.crud.posts({ filtering: true, ordering: true });
 
     t.field('postsCount', {
       type: 'Int',
@@ -20,21 +20,21 @@ schema.extendType({
         where: 'PostWhereInput',
       },
       async resolve(_root, args, ctx) {
-        return ctx.prisma.post.count(args)
+        return ctx.prisma.post.count(args);
       },
-    })
+    });
   },
-})
+});
 
-schema.extendType({
+export const postMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.crud.createOnePost()
-    t.crud.updateOnePost()
-    t.crud.upsertOnePost()
-    t.crud.deleteOnePost()
+    t.crud.createOnePost();
+    t.crud.updateOnePost();
+    t.crud.upsertOnePost();
+    t.crud.deleteOnePost();
 
-    t.crud.updateManyPost()
-    t.crud.deleteManyPost()
+    t.crud.updateManyPost();
+    t.crud.deleteManyPost();
   },
-})
+});

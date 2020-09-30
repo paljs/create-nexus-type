@@ -10,6 +10,6 @@
     "types": "create-types"
   },
   "devDependencies": {
-    "create-nexus-type": "1.2.6"
+    "create-nexus-type": "1.3.0"
   }
 }

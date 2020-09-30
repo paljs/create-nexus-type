@@ -3,7 +3,6 @@
 const arg = require('arg');
 const { ConvertSchemaToObject } = require('@paljs/schema');
 const buildForSchemaVersion = require('./schema');
-const buildForNexusVersion = require('./nexus');
 
 function getArgs() {
   const args = arg({
@@ -16,7 +15,6 @@ function getArgs() {
     '-c': Boolean,
     '-f': Boolean,
     '-o': Boolean,
-    '-s': Boolean,
     '--js': Boolean,
     '--mjs': Boolean,
     '-h': '--help',
@@ -35,11 +33,7 @@ function cli() {
     return;
   }
   const schema = new ConvertSchemaToObject(args['--schema']).run();
-  if (args['-s']) {
-    buildForSchemaVersion(schema, args);
-  } else {
-    buildForNexusVersion(schema, args);
-  }
+  buildForSchemaVersion(schema, args);
 }
 
 function help() {
@@ -47,7 +41,6 @@ function help() {
   usage: cnt (create nexus types from Prisma schema)
   --schema To add schema file path if you not run command in root of project
   --outDir Created files output dir default src/types
-  -s       add this option to use @nexus/schema package
   -mq      add this option to create Queries and Mutations for models 
   -m       add this option to create Mutations
   -q       add this option to create Queries

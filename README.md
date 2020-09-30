@@ -53,7 +53,7 @@ model Post {
 }
 ```
 
-run
+Run
 
 ```
 npx cnt --mq -c -f -o
@@ -62,108 +62,7 @@ npx cnt --mq -c -f -o
 OutPut
 
 ```ts
-// User.ts
-import { schema } from "nexus";
-
-schema.objectType({
-  name: "User",
-  definition(t) {
-    t.model.id();
-    t.model.email();
-    t.model.birthDate();
-    t.model.role();
-    t.model.posts();
-  },
-});
-
-schema.extendType({
-  type: "Query",
-  definition(t) {
-    t.crud.user();
-    t.crud.users({ filtering: true, ordering: true });
-
-    t.field("usersCount", {
-      type: "Int",
-      args: {
-        where: "UserWhereInput",
-      },
-      async resolve(_root, args, ctx) {
-        return ctx.prisma.user.count(args);
-      },
-    });
-  },
-});
-
-schema.extendType({
-  type: "Mutation",
-  definition(t) {
-    t.crud.createOneUser();
-    t.crud.updateOneUser();
-    t.crud.upsertOneUser();
-    t.crud.deleteOneUser();
-
-    t.crud.updateManyUser();
-    t.crud.deleteManyUser();
-  },
-});
-```
-
-```ts
-// Post.ts
-import { schema } from "nexus";
-
-schema.objectType({
-  name: "Post",
-  definition(t) {
-    t.model.id();
-    t.model.author();
-  },
-});
-
-schema.extendType({
-  type: "Query",
-  definition(t) {
-    t.crud.post();
-    t.crud.posts({ filtering: true, ordering: true });
-
-    t.field("postsCount", {
-      type: "Int",
-      args: {
-        where: "PostWhereInput",
-      },
-      async resolve(_root, args, ctx) {
-        return ctx.prisma.post.count(args);
-      },
-    });
-  },
-});
-
-schema.extendType({
-  type: "Mutation",
-  definition(t) {
-    t.crud.createOnePost();
-    t.crud.updateOnePost();
-    t.crud.upsertOnePost();
-    t.crud.deleteOnePost();
-
-    t.crud.updateManyPost();
-    t.crud.deleteManyPost();
-  },
-});
-```
-
-## Use `@nexus/schema` version
-
-run
-
-```
-npx cnt -s --mq -c -f -o
-```
-
-OutPut
-
-```ts
-import { objectType, extendType } from "nexus";
+import { objectType, extendType } from "@nexus/schema";
 
 export const User = objectType({
   name: "User",

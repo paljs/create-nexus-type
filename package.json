@@ -1,6 +1,6 @@
 {
   "name": "create-nexus-type",
-  "version": "1.2.6",
+  "version": "1.3.0",
   "description": "Create nexus types from Prisma2 schema ",
   "main": "src/cli.js",
   "repository": "https://github.com/paljs/create-nexus-type.git",
@@ -11,10 +11,10 @@
     "create-types": "src/types.js"
   },
   "dependencies": {
-    "@paljs/schema": "1.1.0",
-    "arg": "^4.1.2",
+    "@paljs/schema": "2.1.0",
+    "arg": "^4.1.3",
     "pluralize": "^8.0.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.1.2"
   },
   "files": [
     "src"
