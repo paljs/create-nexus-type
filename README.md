@@ -15,7 +15,6 @@ npm i create-nexus-type --save-dev
 ```
   --schema To add schema file path if you not run command in root of project
   --outDir Created files output dir default src/types
-  -s       add this option to use @nexus/schema package
   -mq      add this option to create Queries and Mutations for models
   -m       add this option to create Mutations
   -q       add this option to create Queries
